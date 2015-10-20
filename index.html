@@ -96,8 +96,8 @@
                     var num_zero = Array.apply(null, Array(i)).map(Number.prototype.valueOf,0);
                     num_zero.push(dd['first']);
                     console.log(num_zero);
-                    var tmp = dd['counts'];
-                    var final_list = $.map(tmp, function(el) { return el });
+                    var tmp = dd['counts'];//final list or counts needs to remove the first day!!!!!!!!
+                    var final_list = $.map(tmp, function(el) { return el });//!!!!!!!!!!!!!!!!!!!
                     console.log(final_list);
                     final= num_zero.concat(final_list);
                     console.log(date);
