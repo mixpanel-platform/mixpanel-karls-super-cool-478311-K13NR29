@@ -89,7 +89,7 @@
                    console.log(data1);
                   // for (var i = 0; i < selection; i++){
                   for (var i = 0; i < data1.length; i++){
-                     var date = data1[i];//data[moment().subtract(i, 'weeks').format('YYYY-MM-DD')];
+                     var date = data1[data1.length - (i+1)];//data[moment().subtract(i, 'weeks').format('YYYY-MM-DD')];
                      //console.log(top);
                     var dd = data[date];
                     console.log(dd);
@@ -98,6 +98,8 @@
                     console.log(num_zero);
                     final= num_zero.concat(dd['counts']);
                     console.log(final);
+                    
+                    
                      
                    }  
         
