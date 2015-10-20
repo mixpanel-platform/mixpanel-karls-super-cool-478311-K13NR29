@@ -5,10 +5,173 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    
+
   </head>
   <body class="mixpanel-platform-body">
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     <h1>Hello, World!</h1>
     <script>
+    
+    var options = {
+      items: [
+     { label:'1', value:1},
+    
+    { label:'2', value:2},
+    
+    { label:'3', value:3},
+    
+    { label:'4', value:4},
+    
+    { label:'5', value:5},
+    
+    { label:'6', value:6},
+    
+    { label:'7', value:7},
+    
+    { label:'8', value:8},
+    
+    { label:'9', value:9},
+    
+    { label:'10', value:10},
+    
+    { label:'11', value:11},
+    
+    { label:'12', value:12},
+    
+    { label:'13', value:13},
+    
+    { label:'14', value:14},
+    
+    { label:'15', value:15}
+      ]
+    };
+
+
+    var runData = []
+
+    
+      $(function () {
+        
+        
+       
+    
+        var dropdown = $('<div></div>').appendTo('body').MPSelect(options);     // Create the dropdown with your data
+        dropdown.on('change', function(e, selection) {                          // Do something when an option is selected
+            alert(selection);
+            
+             var params = {
+            from: moment().subtract(selection, 'weeks'),
+            to: moment(),
+            unit: 'week',                      // specifies the the bucket size; can be 'day' or 'week'
+           // interval_count: 1,                // the number of desired units
+          //  limit: 100,                       // maximum number of results to return
+        
+            // the following are undefined by default
+            born_event: '$campaign_delivery',             // if present, an event that must be tracked within the time frame before the user can be included in the query
+           // where: 'properties["age"] == 21', // an expression to filter by
+          //  segment: '$browser',              // a segmentation expression or event property
+        };
+        
+            MP.api.retention('$campaign_open', params).done(function(results) {
+                   console.log(results.values()); //Object.keys(results));
+                   var d1 = Object.keys(results);
+                   var data = results.values();
+                   var data1 = Object.keys(data);
+                   console.log(d1);
+                   console.log(data);
+                   data1.sort(function(a,b) { 
+                       return new Date(a).getTime() - new Date(b).getTime() 
+                    });
+                   console.log(data1);
+                  // for (var i = 0; i < selection; i++){
+                  for (var i = 0; i < data1.length; i++){
+                     var date = data1[i];//data[moment().subtract(i, 'weeks').format('YYYY-MM-DD')];
+                     //console.log(top);
+                    var dd = data[date];
+                    console.log(dd);
+                     
+                   }  
+        
+              });
+        });
+        
+        
+        
+        
+        
+        
+        
+        $('#container').highcharts({
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: 'Historic and Estimated Worldwide Population Growth by Region'
+            },
+            subtitle: {
+                text: 'Source: Wikipedia.org'
+            },
+            xAxis: {
+                categories: ['1750', '1800', '1850', '1900', '1950', '1999', '2050'],
+                //loop through and get weeks
+                tickmarkPlacement: 'on',
+                title: {
+                    enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Billions'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value / 1000;
+                    }
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            
+
+            series: runData
+            /*
+            [{
+                name: 'Asia',
+                data: [502, 635, 809, 947, 1402, 3634, 5268]
+            }, {
+                name: 'Africa',
+                data: [106, 107, 111, 133, 221, 767, 1766]
+            }, {
+                name: 'Europe',
+                data: [163, 203, 276, 408, 547, 729, 628]
+            }, {
+                name: 'America',
+                data: [18, 31, 54, 156, 339, 818, 1201]
+            }, {
+                name: 'Oceania',
+                data: [2, 2, 2, 6, 13, 30, 46]
+            }]
+            */
+        });
+    });
+    
       // Run queries and display results here
     </script>
   </body>
